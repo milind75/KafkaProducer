@@ -1,0 +1,117 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IDE - IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# IDE - Eclipse/STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# IDE - NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# IDE - VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Java
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+# Spring Boot
+application-local.yml
+application-dev.yml
+application-secrets.yml
+
+# H2 Database
+*.db
+*.trace.db
+*.lock.db
+/data/
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Markdown files (temporary/generated)
+# Note: Keep important documentation by using exceptions
+*.md
+!README.md
+!LICENSE
+!EC2_DEPLOYMENT_GUIDE.md
+!EC2_QUICK_START.md
+!DOCKER_DEPLOYMENT.md
+!DEPLOYMENT_SUMMARY.md
+!QUICK_START.md
+!SOLUTION_SUMMARY.md
+!ERROR_FIX_COMPLETE.md
+!SWAGGER_GUIDE.md
+!HELP.md
+
+# Deployment packages
+kafka-producer-deploy.zip
+kafka-deploy.zip
+kafka-project.zip
+
+# AWS Keys (IMPORTANT - Never commit!)
+*.pem
+*.ppk
+
+# Sensitive information
+secrets/
+.env
+.env.local
+.env.production
+
+# Maven (if used)
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+# Application-specific
+/bin/
+
