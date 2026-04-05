@@ -79,6 +79,22 @@ temp/
 # Markdown files (temporary/generated)
 # Note: Keep important documentation by using exceptions
 *.md
+!README.md
+!LICENSE
+!EC2_DEPLOYMENT_GUIDE.md
+!EC2_QUICK_START.md
+!DOCKER_DEPLOYMENT.md
+!DEPLOYMENT_SUMMARY.md
+!QUICK_START.md
+!SOLUTION_SUMMARY.md
+!ERROR_FIX_COMPLETE.md
+!SWAGGER_GUIDE.md
+!HELP.md
+!KAFKA_TO_RABBITMQ_MIGRATION.md
+!RABBITMQ_QUICK_START.md
+!MIGRATION_COMPLETE.md
+!QUICK_REFERENCE.md
+
 # Deployment packages
 kafka-producer-deploy.zip
 kafka-deploy.zip

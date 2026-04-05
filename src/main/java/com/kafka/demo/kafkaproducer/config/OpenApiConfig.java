@@ -14,7 +14,7 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
-    @Value("${spring.application.name:Kafka Producer API}")
+    @Value("${spring.application.name:RabbitMQ Producer API}")
     private String applicationName;
 
     @Bean
@@ -34,7 +34,7 @@ public class OpenApiConfig {
         Info info = new Info()
                 .title(applicationName)
                 .version("1.0.0")
-                .description("REST API for Kafka Producer - Send messages to Kafka topics")
+                .description("REST API for RabbitMQ Producer - Send messages to RabbitMQ queues and exchanges")
                 .contact(contact)
                 .license(license);
 

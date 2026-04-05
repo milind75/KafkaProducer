@@ -1,64 +1,48 @@
 version: '3.8'
 
 services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.5.0
-    hostname: zookeeper
-    container_name: zookeeper
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    hostname: rabbitmq
+    container_name: rabbitmq
     ports:
-      - "2181:2181"
+      - "5672:5672"    # AMQP port
+      - "15672:15672"  # Management UI
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     volumes:
-      - zookeeper-data:/var/lib/zookeeper/data
-      - zookeeper-logs:/var/lib/zookeeper/log
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
-  kafka:
-    image: confluentinc/cp-kafka:7.5.0
-    hostname: kafka
-    container_name: kafka
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-      - "9094:9094"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-    volumes:
-      - kafka-data:/var/lib/kafka/data
-
-  kafkaproducer:
+  rabbitmqproducer:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: kafkaproducer
+    container_name: rabbitmqproducer
     depends_on:
-      - kafka
+      rabbitmq:
+        condition: service_healthy
     ports:
       - "8080:8080"
     environment:
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      KAFKA_TOPIC_NAME: ordersTopic
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      RABBITMQ_EXCHANGE_NAME: orders.exchange
+      RABBITMQ_QUEUE_NAME: orders.queue
+      RABBITMQ_ROUTING_KEY: orders.routing.key
     volumes:
-      - app-logs:/opt/kafkaproducer/logs
+      - app-logs:/opt/rabbitmqproducer/logs
     restart: unless-stopped
 
 volumes:
-  zookeeper-data:
-    driver: local
-  zookeeper-logs:
-    driver: local
-  kafka-data:
+  rabbitmq-data:
     driver: local
   app-logs:
     driver: local

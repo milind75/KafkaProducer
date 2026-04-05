@@ -1,20 +1,27 @@
 spring:
   application:
-    name: kafkaproducer
-  kafka:
-    bootstrap-servers: localhost:9094
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    properties:
-      acks: all
-      retries: 3
-      batch-size: 16384
-
+    name: rabbitmqproducer
+  
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: 13.222.56.46
+    port: 5672
+    username: admin
+    password: admin123
+    virtual-host: /
+    publisher-confirm-type: correlated
+    publisher-returns: true
+    template:
+      mandatory: true
+      retry:
+        enabled: true
+        initial-interval: 1000
+        max-attempts: 3
+        multiplier: 2.0
 
   # H2 Database Configuration
   datasource:
-    url: jdbc:h2:mem:kafkadb
+    url: jdbc:h2:mem:rabbitmqdb
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -35,12 +42,14 @@ spring:
       enabled: true
       path: /h2-console
 
-# Kafka Topic Configuration
-kafka:
-  topic:
-    name: ordersTopic
-    partitions: 3
-    replication-factor: 1
+# RabbitMQ Queue/Exchange Configuration
+rabbitmq:
+  exchange:
+    name: orders.exchange
+    type: topic
+  queue:
+    name: orders.queue
+  routing-key: orders.routing.key
 
 # SpringDoc OpenAPI Configuration
 springdoc:
