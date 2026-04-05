@@ -94,6 +94,9 @@ temp/
 !RABBITMQ_QUICK_START.md
 !MIGRATION_COMPLETE.md
 !QUICK_REFERENCE.md
+!CICD_SETUP_GUIDE.md
+!CICD_QUICK_START.md
+!RABBITMQ_CONNECTION_FIX.md
 
 # Deployment packages
 kafka-producer-deploy.zip
