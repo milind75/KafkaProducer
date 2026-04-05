@@ -34,16 +34,16 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      working-directory: kafkaProducer
+      working-directory: KafkaProducer
 
     - name: Build with Gradle
       run: ./gradlew clean build -x test
-      working-directory: kafkaProducer
+      working-directory: KafkaProducer
 
     - name: Run tests
       run: ./gradlew test
       continue-on-error: true
-      working-directory: kafkaProducer
+      working-directory: KafkaProducer
 
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
