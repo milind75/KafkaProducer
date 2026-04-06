@@ -3,11 +3,12 @@ name: CI/CD Pipeline - Build and Deploy to EC2
 on:
   push:
     branches:
-      - main
+      - master
       - develop
   pull_request:
     branches:
-      - main
+      - master
+      - develop
   workflow_dispatch:
 
 env:
@@ -63,9 +64,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     # Run deploy on:
-    #  - push to main
-    #  - manual workflow_dispatch on main
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    #  - push to master (production) or develop (staging)
+    #  - manual workflow_dispatch on master or develop
+    if: github.ref == 'refs/heads/master' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
 
     steps:
       - name: Download build artifact
