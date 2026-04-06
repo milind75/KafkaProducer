@@ -86,8 +86,8 @@ jobs:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "$EC2_SSH_KEY" > ~/.ssh/milkeyED.pem
-          chmod 600 ~/.ssh/milkeyED.pem
+          install -m 600 /dev/null ~/.ssh/milkeyED.pem
+          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/milkeyED.pem
           ssh-keyscan -H ${{ env.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Copy files to EC2
@@ -95,6 +95,9 @@ jobs:
           scp -i ~/.ssh/milkeyED.pem build/libs/*.jar ubuntu@${{ env.EC2_HOST }}:/tmp/app.jar
           scp -i ~/.ssh/milkeyED.pem application-ec2.yml ubuntu@${{ env.EC2_HOST }}:/tmp/application.yml
           scp -i ~/.ssh/milkeyED.pem deploy-to-ec2.sh ubuntu@${{ env.EC2_HOST }}:/tmp/deploy.sh
+
+      - name: Validate SSH key
+        run: ssh-keygen -lf ~/.ssh/milkeyED.pem
 
       - name: Deploy on EC2
         env:
