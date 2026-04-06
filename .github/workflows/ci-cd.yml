@@ -92,9 +92,9 @@ jobs:
 
       - name: Copy files to EC2
         run: |
-          scp -i ~/.ssh/ec2-key.pem build/libs/*.jar ubuntu@${{ env.EC2_HOST }}:/tmp/app.jar
-          scp -i ~/.ssh/ec2-key.pem application-ec2.yml ubuntu@${{ env.EC2_HOST }}:/tmp/application.yml
-          scp -i ~/.ssh/ec2-key.pem deploy-to-ec2.sh ubuntu@${{ env.EC2_HOST }}:/tmp/deploy.sh
+          scp -i ~/.ssh/milkeyED.pem build/libs/*.jar ubuntu@${{ env.EC2_HOST }}:/tmp/app.jar
+          scp -i ~/.ssh/milkeyED.pem application-ec2.yml ubuntu@${{ env.EC2_HOST }}:/tmp/application.yml
+          scp -i ~/.ssh/milkeyED.pem deploy-to-ec2.sh ubuntu@${{ env.EC2_HOST }}:/tmp/deploy.sh
 
       - name: Deploy on EC2
         env:
@@ -102,7 +102,7 @@ jobs:
           RABBITMQ_USERNAME: ${{ secrets.RABBITMQ_USERNAME }}
           RABBITMQ_PASSWORD: ${{ secrets.RABBITMQ_PASSWORD }}
         run: |
-          ssh -i ~/.ssh/ec2-key.pem ec2-user@${{ env.EC2_HOST }} << 'ENDSSH'
+          ssh -i ~/.ssh/milkeyED.pem ubuntu@${{ env.EC2_HOST }} << 'ENDSSH'
             # Stop existing application
             sudo systemctl stop rabbitmqproducer || true
 
@@ -161,7 +161,7 @@ jobs:
       - name: Rollback on failure
         if: failure()
         run: |
-          ssh -i ~/.ssh/ec2-key.pem ec2-user@${{ env.EC2_HOST }} << 'ENDSSH'
+          ssh -i ~/.ssh/milkeyED.pem ubuntu@${{ env.EC2_HOST }} << 'ENDSSH'
             echo "Rolling back to previous version..."
             sudo systemctl stop rabbitmqproducer
             sudo cp ${{ env.DEPLOY_PATH }}/app.jar.backup ${{ env.DEPLOY_PATH }}/app.jar || true
