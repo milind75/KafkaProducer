@@ -117,6 +117,9 @@ jobs:
             # Backup current version
             sudo cp ${{ env.DEPLOY_PATH }}/app.jar ${{ env.DEPLOY_PATH }}/app.jar.backup || true
 
+            # Ensure application directories exist before moving files
+            sudo mkdir -p ${{ env.DEPLOY_PATH }}/config
+
             # Deploy new version
             sudo mv /tmp/app.jar ${{ env.DEPLOY_PATH }}/app.jar
             sudo mv /tmp/application.yml ${{ env.DEPLOY_PATH }}/config/application.yml
