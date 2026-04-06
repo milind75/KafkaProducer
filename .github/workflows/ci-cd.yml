@@ -86,15 +86,15 @@ jobs:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "$EC2_SSH_KEY" > ~/.ssh/ec2-key.pem
-          chmod 600 ~/.ssh/ec2-key.pem
+          echo "$EC2_SSH_KEY" > ~/.ssh/milkeyED.pem
+          chmod 600 ~/.ssh/milkeyED.pem
           ssh-keyscan -H ${{ env.EC2_HOST }} >> ~/.ssh/known_hosts
 
       - name: Copy files to EC2
         run: |
-          scp -i ~/.ssh/ec2-key.pem build/libs/*.jar ec2-user@${{ env.EC2_HOST }}:/tmp/app.jar
-          scp -i ~/.ssh/ec2-key.pem application-ec2.yml ec2-user@${{ env.EC2_HOST }}:/tmp/application.yml
-          scp -i ~/.ssh/ec2-key.pem deploy-to-ec2.sh ec2-user@${{ env.EC2_HOST }}:/tmp/deploy.sh
+          scp -i ~/.ssh/ec2-key.pem build/libs/*.jar ubuntu@${{ env.EC2_HOST }}:/tmp/app.jar
+          scp -i ~/.ssh/ec2-key.pem application-ec2.yml ubuntu@${{ env.EC2_HOST }}:/tmp/application.yml
+          scp -i ~/.ssh/ec2-key.pem deploy-to-ec2.sh ubuntu@${{ env.EC2_HOST }}:/tmp/deploy.sh
 
       - name: Deploy on EC2
         env:
