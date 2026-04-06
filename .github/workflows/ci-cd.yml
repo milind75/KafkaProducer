@@ -117,6 +117,11 @@ jobs:
             # Ensure application directories exist before any file operations
             sudo mkdir -p ${{ env.DEPLOY_PATH }}/config
 
+            # Remove app.jar if it is accidentally a directory (prevents mv failure)
+            if [ -d "${{ env.DEPLOY_PATH }}/app.jar" ]; then
+              sudo rm -rf "${{ env.DEPLOY_PATH }}/app.jar"
+            fi
+
             # Backup current version
             sudo cp ${{ env.DEPLOY_PATH }}/app.jar ${{ env.DEPLOY_PATH }}/app.jar.backup || true
 
