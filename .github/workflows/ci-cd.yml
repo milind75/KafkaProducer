@@ -14,8 +14,8 @@ on:
 env:
   JAVA_VERSION: '17'
   EC2_HOST: ec2-13-222-56-46.compute-1.amazonaws.com
-  APP_NAME: rabbitmqproducer
-  DEPLOY_PATH: /opt/rabbitmqproducer
+  APP_NAME: kafkaproducer
+  DEPLOY_PATH: /opt/kafkaproducer
 
 jobs:
   build:
