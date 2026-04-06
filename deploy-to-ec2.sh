@@ -15,7 +15,7 @@ APP_NAME="kafkaproducer"
 APP_VERSION="0.0.1-SNAPSHOT"
 JAR_FILE="${APP_NAME}-${APP_VERSION}.jar"
 APP_DIR="/opt/kafkaproducer"
-SERVICE_USER="kafkaapp"
+SERVICE_USER="rabbitmqapp"
 
 # Colors
 RED='\033[0;31m'
@@ -53,7 +53,9 @@ mkdir -p $APP_DIR/logs
 mkdir -p $APP_DIR/config
 
 echo -e "${GREEN}Step 4: Copying application files...${NC}"
-if [ -f "build/libs/$JAR_FILE" ]; then
+if [ -f "$APP_DIR/app.jar" ]; then
+    echo "JAR file already present at $APP_DIR/app.jar (deployed by CI/CD)"
+elif [ -f "build/libs/$JAR_FILE" ]; then
     cp build/libs/$JAR_FILE $APP_DIR/app.jar
     echo "JAR file copied to $APP_DIR/app.jar"
 else
@@ -72,9 +74,9 @@ chown -R $SERVICE_USER:$SERVICE_USER $APP_DIR
 chmod +x $APP_DIR/app.jar
 
 echo -e "${GREEN}Step 6: Creating systemd service...${NC}"
-cat > /etc/systemd/system/kafkaproducer.service <<EOF
+cat > /etc/systemd/system/rabbitmqproducer.service <<EOF
 [Unit]
-Description=Kafka Producer Spring Boot Application
+Description=RabbitMQ Producer Spring Boot Application
 After=syslog.target network.target
 
 [Service]
@@ -99,7 +101,7 @@ echo -e "${GREEN}Step 7: Reloading systemd...${NC}"
 systemctl daemon-reload
 
 echo -e "${GREEN}Step 8: Enabling service...${NC}"
-systemctl enable kafkaproducer.service
+systemctl enable rabbitmqproducer.service
 
 echo ""
 echo -e "${GREEN}=========================================="
@@ -107,11 +109,11 @@ echo "Deployment Complete!"
 echo "==========================================${NC}"
 echo ""
 echo "Service Management Commands:"
-echo "  Start:   sudo systemctl start kafkaproducer"
-echo "  Stop:    sudo systemctl stop kafkaproducer"
-echo "  Restart: sudo systemctl restart kafkaproducer"
-echo "  Status:  sudo systemctl status kafkaproducer"
-echo "  Logs:    sudo journalctl -u kafkaproducer -f"
+echo "  Start:   sudo systemctl start rabbitmqproducer"
+echo "  Stop:    sudo systemctl stop rabbitmqproducer"
+echo "  Restart: sudo systemctl restart rabbitmqproducer"
+echo "  Status:  sudo systemctl status rabbitmqproducer"
+echo "  Logs:    sudo journalctl -u rabbitmqproducer -f"
 echo ""
 echo "Application Details:"
 echo "  Directory: $APP_DIR"
@@ -120,9 +122,9 @@ echo "  Config:    $APP_DIR/config/application.yml"
 echo "  Port:      8080"
 echo ""
 echo -e "${YELLOW}Next Steps:${NC}"
-echo "1. Update $APP_DIR/config/application.yml with your Kafka broker address"
+echo "1. Update $APP_DIR/config/application.yml with your RabbitMQ broker address"
 echo "2. Configure security groups to allow port 8080"
-echo "3. Start the service: sudo systemctl start kafkaproducer"
-echo "4. Check status: sudo systemctl status kafkaproducer"
+echo "3. Start the service: sudo systemctl start rabbitmqproducer"
+echo "4. Check status: sudo systemctl status rabbitmqproducer"
 echo ""
 
