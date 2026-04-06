@@ -114,11 +114,11 @@ jobs:
             # Stop existing application
             sudo systemctl stop rabbitmqproducer || true
 
+            # Ensure application directories exist before any file operations
+            sudo mkdir -p ${{ env.DEPLOY_PATH }}/config
+
             # Backup current version
             sudo cp ${{ env.DEPLOY_PATH }}/app.jar ${{ env.DEPLOY_PATH }}/app.jar.backup || true
-
-            # Ensure application directories exist before moving files
-            sudo mkdir -p ${{ env.DEPLOY_PATH }}/config
 
             # Deploy new version
             sudo mv /tmp/app.jar ${{ env.DEPLOY_PATH }}/app.jar
